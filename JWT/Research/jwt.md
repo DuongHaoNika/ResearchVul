@@ -1,5 +1,26 @@
 # JWT
 
+### Why using JWT?
+
+The HTTP protocol is stateless, this means a new request (e.g. GET /order/42) won’t know anything about the previous one, so we need to reauthenticate for each new request.
+
+![Alt text](image-3.png)
+
+The traditional way of dealing with this is the use of Server Side Sessions (SSS). In this scenario, we first check for username and password; if they are authentic, the server will save a session id in memory and return it to the client. From now on, the client will just need to send its `session` id to be recognized.
+
+![Alt text](image-4.png)
+
+=> This solution will fix a problem but it will create another one.
+
+![Alt text](image-5.png)
+
+=> How to fix:
+- Synchronize sessions between servers — tricky and error-prone;
+- Use an external in-memory database — good solution, but it will add another component to the infrastructure;
+- Third: embrace the stateless nature of HTTP and search for a better solution!
+
+=> JWT
+
 ### What are JWTs?
 
 JSON web tokens (JWTs) are a standardized format for sending cryptographically signed JSON data between systems. They can theoretically contain any kind of data, but are most commonly used to send information ("claims") about users as part of authentication, session handling, and access control mechanisms.
@@ -72,6 +93,10 @@ HMACSHA256(
   secret)
 ```
 
+RS256
+
+![img.png](img.png)
+
 Signature is used to verify the message won't be changed. In case the token is signed with a private key, it can also verify the JWT sender.
 
 ### How do JWT work?
@@ -82,15 +107,40 @@ Signature is used to verify the message won't be changed. In case the token is s
 
 2. When authorization is provided, the authorization server will return the access token to the application.
 
-3. Application will use access token to access resource (like API).   
+3. Application will use access token to access resource (like API). 
 
-### JWT vs JWS vs JWE
+### Types of JWT?
 
-The JWT  only defines a format for representing information ("claims") as a JSON object that can be transferred between two parties. In practice, JWTs aren't really used as a standalone entity. The JWT spec is extended by both the JSON Web Signature (JWS) and JSON Web Encryption (JWE) specifications, which define concrete ways of actually implementing JWTs.
+There are 2 types of JWT: JWS, JWE
 
-In other words, a JWT is usually either a JWS or JWE token. When people use the term "JWT", they almost always mean a JWS token. JWEs are very similar, except that the actual contents of the token are encrypted rather than just encoded.
+- The data in a JWS is public—meaning anyone with the token can read the data—whereas a JWE is encrypted and private. To read data contained within a JWE, you need both the token and a secret key.
+
+- When you use a JWT, it’s usually a JWS. The 'S' (the signature) is the important part and allows the token to be validated. 
 
 ![](image-1.png)
+
+
+### How to verify signature?
+
+- Signing Input: this is the base64Url encoded header and the base64Url encoded payload, concatenated with a `.`
+![img_1.png](img_1.png) 
+
+- Hashing(SHA256 hashing algorithm): 
+  - Hashing is irreversible. 
+  - Hashing will always produce the same output for the same input.
+  - No two different hashing inputs will produce the same output.
+![img_2.png](img_2.png)
+- Encryption: RSA, which is an asymmetric signing algorithm and uses one key to encrypt tokens, and another key to decrypt them.
+- ![img_3.png](img_3.png)
+
+1. Decode Claims => check algorithm in header. If it doesn't match, we should reject the token.
+
+2. Hashing (Again) => hash SHA256 header, payload.
+
+3. Decrypt: decrypt signature => gain hash signature
+
+4. Compare Hashes + Verifying Token Claims
+
 
 ### What are JWT attacks?
 

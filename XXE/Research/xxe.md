@@ -1,3 +1,33 @@
+## What is XML?
+
+XML stands for eXtensible Markup Language, we can understand XML is markup language, is developed by W3C to store and transmit data.
+
+### Entity
+
+Entity has 3 parts: `&`, `nameOfEntity` and `;`. Entity is declared in DTD (Document Type Definition).
+
+__Internal Entity__
+
+- Entity is declared and used in the same file.
+- Syntax: `<!ENTITY entity-name "entity-value">`
+
+>```xml
+>// DTD Example:
+>
+><!ENTITY name "John">
+><!ENTITY age "20">
+>
+>// XML example:
+>
+><info>Name: &name; Age: &age;</info>
+>
+>```
+
+__External Entity__
+
+- Entity is declared in another position, system use will retrive to this position to get data of entity.
+- Syntax: `<!ENTITY entity-name SYSTEM "URI/URL">`
+
 ## What is XXE?
 
 XXE is stand for XML external entity injection. XXE is a web security vulnerability that allows an attacker to interfere with an application's processing of XML data. 

